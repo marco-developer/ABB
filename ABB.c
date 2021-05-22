@@ -22,6 +22,8 @@ pABB * criarABB(int tamInfo)
     // Prepara a RAIZ
     arvore->NoRaiz = (pNoABB*) malloc(sizeof(pNoABB)+tamInfo);
     arvore->NoRaiz = NULL;  // Coloca como NULL inicialmente
+    
+    return arvore;
 };
 
 // Função PUBLICA
