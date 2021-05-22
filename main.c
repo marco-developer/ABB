@@ -2,18 +2,21 @@
 #include <stdlib.h>
 #include "ABB-publico.h"
 
-int* cmpMaior(int * p1, int * p2)
+int cmpMaior(void * p1, void * p2)
 {
     int COMPARA;
-    if (*p1 > *p2){
+    int *x = p1;
+    int *y = p2;
+    if (*x > *y){
         COMPARA = 1;
-    } else if (*p1 < *p2) {
+    } else if (*x < *y) {
         COMPARA = 0;
-    } else if (*p1 = *p2){
+    } else if (*x == *y){
         COMPARA = 2;
     }
     return COMPARA;
 }
+
 
 int main(int argc, char **argv)
 {
@@ -38,23 +41,23 @@ int main(int argc, char **argv)
     pABB * abb;
 
     abb = criarABB(sizeof(int));
+    if(!abb) printf ("Erro ao criar arvore!"); else printf("Arvore criada com sucesso!");
 
 
     // ADICIONA ELEMENTOS À ÀRVORE
     for (int i=0; i<13; i++){
 
         Res = insereABB(abb,p[i],cmpMaior);
+        if(Res==0) printf("Elemento %d inserido com sucesso!\n", i); else printf ("Erro ao inserir elemento!");
 
     }
 
-    
-
-
     // REMOVE ELEMENTOS
-    Res = removeABB(abb,p[4],cmpMaior);
+    // Res = removeABB(abb,p[4],cmpMaior);
 
-
+    printf("Preparando para destruir arvore\n");
     Res = destroiABB(abb);
-    Res = destroiABB(abb);
+    if(Res==0) printf("Arvore destruida com sucesso!\n"); else printf ("Erro ao destuir arvore!");
+    
 
 }

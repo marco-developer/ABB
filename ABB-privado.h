@@ -14,13 +14,13 @@ typedef struct NoABB{
     struct NoABB *pai;
     struct NoABB *esquerda;
     struct NoABB *direita;
-};
+}NoABB;
 
 typedef struct ABB
 {
     int tamInfo;
     pNoABB * NoRaiz;
-};
+}ABB;
 
 
 
