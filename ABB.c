@@ -231,6 +231,8 @@ int destroiABB(pABB * arvore)
 
 int liberaNo(pNoABB *noArvore)
 {
+    void * tmp;
+
     if(!noArvore) {
 
         printf("No nao alocado!\n");
@@ -238,6 +240,7 @@ int liberaNo(pNoABB *noArvore)
 
     } else {
         printf("Analisando no %d\n", noArvore->dados);
+        tmp = noArvore->dados;
 
         printf("Verificando no a esquerda de %d\n", noArvore->dados);
         if(noArvore->esquerda==NULL) printf("Sem no a esquerda\n\n"); 
@@ -254,7 +257,7 @@ int liberaNo(pNoABB *noArvore)
         }
         
         free(noArvore);
-        printf("No liberado com sucesso!\n\n");
+        printf("No %d liberado com sucesso!\n\n", tmp);
     }
     
     return SUCESSO;
