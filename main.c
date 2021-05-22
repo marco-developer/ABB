@@ -45,22 +45,22 @@ int main(int argc, char **argv)
 
 
     // ADICIONA ELEMENTOS À ÀRVORE
+    printf("Inserindo elementos:\n");
     for (int i=0; i<13; i++){
 
         Res = insereABB(abb,p[i],cmpMaior);
         if(Res==0) printf("Elemento %d inserido com sucesso!\n", p[i]); else printf ("Erro ao inserir elemento!");
 
     }
-
     
+    // REMOVE ELEMENTO
+    printf("\nRemovendo elementos:\n");
+    Res = removeABB(abb,p[4],cmpMaior);
+    if(Res==0) printf("Elemento %d removido com sucesso!\n", p[4]); else printf ("Erro ao remover elemento!");
 
-
-    // REMOVE ELEMENTOS
-    // Res = removeABB(abb,p[4],cmpMaior);
-
-    printf("Preparando para destruir arvore.\n");
+    // DESTROI ARVORE
+    printf("\nPreparando para destruir arvore.\n");
     Res = destroiABB(abb);
     if(Res==0) printf("Arvore destruida com sucesso!\n"); else printf ("Erro ao destuir arvore!");
     
-
 }
