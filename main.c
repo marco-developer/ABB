@@ -4,17 +4,13 @@
 
 int cmpMaior(void * p1, void * p2)
 {
-    int COMPARA;
     int *x = p1;
     int *y = p2;
-    if (*x > *y){
-        COMPARA = 1;
-    } else if (*x < *y) {
-        COMPARA = 0;
-    } else if (*x == *y){
-        COMPARA = 2;
-    }
-    return COMPARA;
+
+    if (*x > *y) return 1;
+    else if (*x < *y) return 0;
+    
+    return 2;
 }
 
 
