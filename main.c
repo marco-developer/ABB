@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     // REMOVE ELEMENTOS
     // Res = removeABB(abb,p[4],cmpMaior);
 
-    printf("Preparando para destruir arvore\n");
+    printf("Preparando para destruir arvore.\n");
     Res = destroiABB(abb);
     if(Res==0) printf("Arvore destruida com sucesso!\n"); else printf ("Erro ao destuir arvore!");
     

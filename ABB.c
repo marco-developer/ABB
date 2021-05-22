@@ -19,6 +19,8 @@ pABB * criarABB(int tamInfo)
     // Prepara a RAIZ
     arvore->NoRaiz = (pNoABB*) malloc(sizeof(pNoABB)+tamInfo);
     arvore->NoRaiz = NULL;  // Coloca como NULL inicialmente
+    
+    return arvore;
 };
 
 // Função PUBLICA
@@ -26,13 +28,11 @@ pABB * criarABB(int tamInfo)
 int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
 {
     int Resultado;
-    Resultado = ERRO;
-
     pNoABB* NoAtual;
 
     // Primeiro passo verifica se a árvore esta vazia
     if (testaVazia(arvore)){  // Se ela esta vazia, precisamos adicionar o No RAIZ
-        NoAtual = adicionaNo(arvore->NoRaiz, dado, arvore->tamInfo, Resultado);
+        NoAtual = adicionaNo(arvore->NoRaiz, dado, arvore->tamInfo, &Resultado);
         NoAtual->pai = NULL;       // No RAIZ não tem PAI
         arvore->NoRaiz = NoAtual;  // No RAIZ
 
@@ -78,7 +78,7 @@ int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
                 NoAtual = NoAtual->direita;
             } else if (COMPARA ==2) {
                 printf("ERRO: Erro ao inserir elemento na arvore: elemento ja existe.\n");
-                Resultado = ERRO;
+                // Resultado = ERRO;
                 return Resultado;
             }
 
@@ -86,7 +86,7 @@ int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
 
         // Depois que encontrou o No VAZIO, adiciona as informacoes
         NoAtual = (pNoABB*) malloc(sizeof(pNoABB)+arvore->tamInfo); // Faz o malloc
-        NoAtual = adicionaNo(NoAtual, dado, arvore->tamInfo, Resultado);  // Coloca as informacoes no NoATUAL
+        NoAtual = adicionaNo(NoAtual, dado, arvore->tamInfo, &Resultado);  // Coloca as informacoes no NoATUAL
         NoAtual->pai = NoPai;      // Atualiza o NoPAI do NoATUAL
         
         // Atualiza a arvore
@@ -101,7 +101,7 @@ int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
     }
 
     // Esse ponto nunca deve ser atingido
-    Resultado = ERRO;
+    // Resultado = ERRO;
     return Resultado;
 }
 
@@ -215,16 +215,17 @@ int removeABB(pABB * arvore, void * item, int (* cmp)(void *, void *))
 // Destroi a árvore
 int destroiABB(pABB * arvore)
 {
-    printf("Iniciando destruicao. Verfica se arvore esta alocada\n");
+    printf("Iniciando destruicao. Verfica se arvore esta alocada.\n");
     if(!arvore) {
 
-        printf("Arvore nao alocado!\n");
+        printf("Arvore nao alocada!\n");
         return ERRO;
 
     } else {
-        printf("Arvore alocada. Partindo para liberacao de nos.\n");
+        printf("Arvore alocada. Iniciando liberacao de nos.\n");
         liberaNo(arvore->NoRaiz);
     }
+    printf("Todos os nos liberados. Liberando arvore.\n");
     free(arvore);
     return SUCESSO;
 }
@@ -239,18 +240,23 @@ int liberaNo(pNoABB *noArvore)
         return ERRO;
 
     } else {
-        printf("Analisando no %d\n", noArvore->dados);
         tmp = noArvore->dados;
 
-        printf("Verificando no a esquerda de %d\n", noArvore->dados);
-        if(noArvore->esquerda==NULL) printf("Sem no a esquerda\n\n"); 
+        printf("Analisando no %d\n", tmp);
+        // printf("Analisando no... \n");
+        
+
+        printf("Verificando no a esquerda de %d\n", tmp);
+        // printf("Verificando no a esquerda\n");
+        if(noArvore->esquerda==NULL) printf("Sem no a esquerda\n"); 
         else {
             printf("No a esquerda encontrado!\n\n");
             liberaNo(noArvore->esquerda);
         }
 
-        printf("Verificando no a direita de %d\n", noArvore->dados);
-        if(noArvore->direita==NULL) printf("Sem no a direita\n\n");
+        printf("Verificando no a direita de %d\n", tmp);
+        // printf("Verificando no a direita\n");
+        if(noArvore->direita==NULL) printf("Sem no a direita\n");
         else {
             printf("No a direita encontrado!\n\n");
             liberaNo(noArvore->direita);
@@ -258,6 +264,7 @@ int liberaNo(pNoABB *noArvore)
         
         free(noArvore);
         printf("No %d liberado com sucesso!\n\n", tmp);
+        // printf("No liberado com sucesso!\n\n");
     }
     
     return SUCESSO;
@@ -270,17 +277,19 @@ int liberaNo(pNoABB *noArvore)
 // Adiciona um No filho à arvore
 pNoABB* adicionaNo(pNoABB * NoAtual, void * dado, int tamInfo, int * Resultado)
 {
-    Resultado = ERRO;
-
     NoAtual = (pNoABB*) malloc(sizeof(pNoABB)+tamInfo);
-    if (NoAtual == NULL) { return NoAtual; }  // Em caso de erro
+    if (NoAtual == NULL) { 
+        *Resultado = ERRO;
+        exit(1);
+    } else{  // Em caso de erro
 
-    NoAtual->dados = (void*) malloc(tamInfo);
-    NoAtual->dados = dado;
-    NoAtual->esquerda = NULL;
-    NoAtual->direita = NULL;
+        NoAtual->dados = (void*) malloc(tamInfo);
+        NoAtual->dados = dado;
+        NoAtual->esquerda = NULL;
+        NoAtual->direita = NULL;
 
-    Resultado = SUCESSO;
+        *Resultado = SUCESSO;
+    }
     return NoAtual;
 }
 
