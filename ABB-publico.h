@@ -13,3 +13,6 @@ int insereABB(pABB * arvore, void * dado, int (* cmp)(void *p1, void *p2));
 int removeABB(pABB * arvore, void * item, int (* cmp)(void *p1, void *p2));
 int destroiABB(pABB * arvore);
 int liberaNo(pNoABB *noArvore);
+int reiniciaABB(pABB * arvore);
+
+int quantificaABB(pABB * arvore);

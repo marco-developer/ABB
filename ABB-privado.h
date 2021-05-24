@@ -10,6 +10,7 @@ typedef struct NoABB{
 typedef struct ABB
 {
     int tamInfo;
+    int quantidadeDados;
     pNoABB * NoRaiz;
 }ABB;
 

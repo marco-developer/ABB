@@ -7,95 +7,115 @@
 #define SUCESSO 0
 #define ERRO 1
 
-pABB * criarABB(int tamInfo)
+pABB *criarABB(int tamInfo)
 {
-    pABB * arvore;
-    arvore = (pABB*) malloc(sizeof(pABB));
-    if (arvore == NULL) { return arvore; } // Caso de erro no malloc
+    pABB *arvore;
+    arvore = (pABB *)malloc(sizeof(pABB));
+    if (arvore == NULL)
+    {
+        return arvore;
+    } // Caso de erro no malloc
 
     // Inicializa variaveis
     arvore->tamInfo = tamInfo;
+    arvore->quantidadeDados = 0;
 
     // Prepara a RAIZ
-    arvore->NoRaiz = (pNoABB*) malloc(sizeof(pNoABB)+tamInfo);
-    arvore->NoRaiz = NULL;  // Coloca como NULL inicialmente
-    
+    arvore->NoRaiz = (pNoABB *)malloc(sizeof(pNoABB) + tamInfo);
+    arvore->NoRaiz = NULL; // Coloca como NULL inicialmente
+
     return arvore;
 };
 
 // Função PUBLICA
 // Adiciona um elemento à arvore
-int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
+int insereABB(pABB *arvore, void *dado, int (*cmp)(void *, void *))
 {
     int Resultado;
-    pNoABB* NoAtual;
+    pNoABB *NoAtual;
 
     // Primeiro passo verifica se a árvore esta vazia
-    if (testaVazia(arvore)){  // Se ela esta vazia, precisamos adicionar o No RAIZ
+    if (testaVazia(arvore))
+    { // Se ela esta vazia, precisamos adicionar o No RAIZ
         NoAtual = adicionaNo(arvore->NoRaiz, dado, arvore->tamInfo, &Resultado);
-        NoAtual->pai = NULL;       // No RAIZ não tem PAI
-        arvore->NoRaiz = NoAtual;  // No RAIZ
+        NoAtual->pai = NULL;      // No RAIZ não tem PAI
+        arvore->NoRaiz = NoAtual; // No RAIZ
+        arvore->quantidadeDados++;
 
         Resultado = SUCESSO;
         return Resultado;
-    } 
-    else   // Caso a árvore ja tenha No RAIZ 
-    {   
+    }
+    else // Caso a árvore ja tenha No RAIZ
+    {
 
         // O primeiro No é a RAIZ
         NoAtual = arvore->NoRaiz;
 
         // NoPAI que mantera as informacoes da arvore para atualizacao
-        pNoABB* NoPai;
+        pNoABB *NoPai;
         NoPai = arvore->NoRaiz;
 
         int COMPARA;
-        COMPARA = cmp(&dado,&arvore->NoRaiz->dados);
+        COMPARA = cmp(&dado, &arvore->NoRaiz->dados);
 
         // Verifica se o novo dado é maior que o dado da RAIZ
         // Isso determina se o novo elemento vai para a Direita ou Esquerda
         // Resultado da Comparação (qualquer que seja): 0 = Esquerda, 1 = Direita
-        if (COMPARA==0){
+        if (COMPARA == 0)
+        {
             NoAtual = arvore->NoRaiz->esquerda;
-        } else if (COMPARA == 1) {
+        }
+        else if (COMPARA == 1)
+        {
             NoAtual = arvore->NoRaiz->direita;
-        } else if (COMPARA == 2) { // Caso seja igual, impede de colocar esse elemento na arvore
+        }
+        else if (COMPARA == 2)
+        { // Caso seja igual, impede de colocar esse elemento na arvore
             printf("ERRO: Erro ao inserir elemento na arvore: elemento ja existe.\n");
             Resultado = ERRO;
             return Resultado;
         }
 
         // Agora faz a recorrencia até encontrar um No VAZIO
-        while(NoAtual!=NULL){
-            
+        while (NoAtual != NULL)
+        {
+
             NoPai = NoAtual;
-            COMPARA = cmp(&dado,&NoAtual->dados);
+            COMPARA = cmp(&dado, &NoAtual->dados);
 
             // Verifica se o novo dado é maior que o dado do NoAtual
-            if (COMPARA==0){
+            if (COMPARA == 0)
+            {
                 NoAtual = NoAtual->esquerda;
-            } else if (COMPARA == 1) {
+            }
+            else if (COMPARA == 1)
+            {
                 NoAtual = NoAtual->direita;
-            } else if (COMPARA ==2) {
+            }
+            else if (COMPARA == 2)
+            {
                 printf("ERRO: Erro ao inserir elemento na arvore: elemento ja existe.\n");
                 // Resultado = ERRO;
                 return Resultado;
             }
-
         }
 
         // Depois que encontrou o No VAZIO, adiciona as informacoes
-        NoAtual = (pNoABB*) malloc(sizeof(pNoABB)+arvore->tamInfo); // Faz o malloc
-        NoAtual = adicionaNo(NoAtual, dado, arvore->tamInfo, &Resultado);  // Coloca as informacoes no NoATUAL
-        NoAtual->pai = NoPai;      // Atualiza o NoPAI do NoATUAL
-        
+        NoAtual = (pNoABB *)malloc(sizeof(pNoABB) + arvore->tamInfo);     // Faz o malloc
+        NoAtual = adicionaNo(NoAtual, dado, arvore->tamInfo, &Resultado); // Coloca as informacoes no NoATUAL
+        NoAtual->pai = NoPai;                                             // Atualiza o NoPAI do NoATUAL
+
         // Atualiza a arvore
-        if (COMPARA == 0){
+        if (COMPARA == 0)
+        {
             NoPai->esquerda = NoAtual;
-        } else {  // se chegou aqui, não há necessidade de verificar com o 2
+        }
+        else
+        { // se chegou aqui, não há necessidade de verificar com o 2
             NoPai->direita = NoAtual;
         }
-        
+        arvore->quantidadeDados++;
+
         Resultado = SUCESSO;
         return Resultado;
     }
@@ -105,185 +125,327 @@ int insereABB(pABB * arvore, void * dado,  int (* cmp)(void *, void *))
     return Resultado;
 }
 
+pNoABB *buscaNo(pABB *arvore, void *item, int (*cmp)(void *, void *))
+{
+    pNoABB *NoAtual;
+    NoAtual = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    NoAtual = arvore->NoRaiz;
+
+    int COMPARA;
+    COMPARA = cmp(&item, &NoAtual->dados);
+    while (NoAtual != NULL)
+    {
+        printf("[buscaNo] : NóAtual: %d  ", NoAtual->dados);
+        if (NoAtual->esquerda != NULL) printf("(<- : %d)", NoAtual->esquerda->dados);
+        if (NoAtual->direita != NULL) printf(" (-> : %d)", NoAtual->direita->dados);
+
+        if (COMPARA == 2)
+        {
+            printf(" Nó encontrado.\n");
+            return NoAtual;
+        }
+        else if (COMPARA == 0)
+        {
+            printf(" Indo para a esquerda\n");
+            NoAtual = NoAtual->esquerda;
+        }
+        else
+        {
+            printf(" Indo para a direita\n");
+            NoAtual = NoAtual->direita;
+        }
+
+        COMPARA = cmp(&item, &NoAtual->dados);
+    }
+    return NULL;
+}
+
+
+
+int remocaoNoSemFilhos (pABB * arvore, pNoABB *NoRemover)
+{
+    pNoABB *NoPai;
+    NoPai = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    int Resultado = ERRO;
+
+    if (NoRemover == arvore->NoRaiz)
+    {
+        printf("[removeABB] : Removendo nó raiz sem filhos.\n");
+        arvore->NoRaiz = NULL;
+        arvore->quantidadeDados--;
+        Resultado = SUCESSO;
+        return Resultado;
+    }
+
+    NoPai = NoRemover->pai;
+
+    if (NoPai->direita == NoRemover)
+    {
+        NoPai->direita = NULL;
+    }
+    else
+    {
+        NoPai->esquerda = NULL;
+    }
+    arvore->quantidadeDados--;
+    Resultado = SUCESSO;
+    return Resultado;
+}
+
+
+int remocaoNo1FilhoDireita (pABB * arvore, pNoABB *NoRemover)
+{
+    pNoABB *NoPai;
+    NoPai = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    int Resultado = ERRO;
+
+    if (NoRemover == arvore->NoRaiz)
+    {
+        arvore->NoRaiz = arvore->NoRaiz->esquerda;
+        arvore->quantidadeDados--;
+        Resultado = SUCESSO;
+        return Resultado;
+    }
+
+    NoPai = NoRemover->pai;
+
+    if (NoPai->esquerda == NoRemover)
+    {
+        NoPai->esquerda = NoRemover->direita;
+    }
+    else
+    {
+        NoPai->direita = NoRemover->direita;
+    }
+    arvore->quantidadeDados--;
+    Resultado = SUCESSO;
+    return Resultado;
+}
+
+
+int remocaoNo1FilhoEsquerda (pABB * arvore, pNoABB *NoRemover)
+{
+    pNoABB *NoPai;
+    NoPai = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    int Resultado = ERRO;
+
+    if (NoRemover == arvore->NoRaiz)
+    {
+        arvore->NoRaiz = arvore->NoRaiz->esquerda;
+        arvore->quantidadeDados--;
+        Resultado = SUCESSO;
+        return Resultado;
+    }
+
+    NoPai = NoRemover->pai;
+
+    if (NoPai->esquerda == NoRemover)
+    {
+        NoPai->esquerda = NoRemover->esquerda;
+    }
+    else
+    {
+        NoPai->direita = NoRemover->direita;
+    }
+    arvore->quantidadeDados--;
+    Resultado = SUCESSO;
+    return Resultado;
+}
+
+
+int remocaoNo2Filhos(pABB *arvore, pNoABB *NoAtual)
+{
+    int Resultado = ERRO;
+    pNoABB *NoSucessor;
+    pNoABB *NoSucessorPai;
+    pNoABB *NoRemover;
+    NoSucessor = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    NoRemover = malloc(sizeof(pNoABB) + arvore->tamInfo);
+    NoSucessorPai = malloc(sizeof(pNoABB) + arvore->tamInfo);
+
+    // 1. Procuramos pelo nó sucessor (nó com menor valor dos filhos da direita)
+    NoRemover = NoAtual;
+    NoSucessor = NoAtual->direita;
+    NoSucessorPai = NoAtual;
+
+    // Caso especial onde a subarvore na direita do nó a ser deletado NÃO tem ramo esquerdo
+    if (NoSucessor->esquerda == NULL)
+    {
+        NoRemover->dados = NoSucessor->dados;
+        NoRemover->direita = NoSucessor->direita;
+
+        arvore->quantidadeDados--;
+        Resultado = SUCESSO;
+        return Resultado;
+    }
+
+    // Encontra o Nó Sucessor na subarvore da DIREITA do nó a ser deletado
+    while (NoSucessor->esquerda != NULL)
+    {
+        NoSucessorPai = NoSucessor;
+        NoSucessor = NoSucessor->esquerda;
+    }
+
+    NoRemover->dados = NoSucessor->dados;
+    NoSucessorPai->esquerda = NoSucessor->direita;
+
+    arvore->quantidadeDados--;
+    Resultado = SUCESSO;
+    return Resultado;
+}
+
+
 
 // Função PÚBLICA
 // Remove elemento da árvore
-int removeABB(pABB * arvore, void * item, int (* cmp)(void *, void *))
+int removeABB(pABB *arvore, void *item, int (*cmp)(void *, void *))
 {
     int Resultado;
     Resultado = ERRO;
 
-    int COMPARA;
-    int COMPARA_ant;
-
     // Inicializa o NoATUAL (Temporario)
-    pNoABB* NoAtual;
-    pNoABB* NoPai;
-    NoAtual = malloc(sizeof(pNoABB)+arvore->tamInfo);
-    NoPai = malloc(sizeof(pNoABB)+arvore->tamInfo);
+    pNoABB *NoRemover;
+    NoRemover = malloc(sizeof(pNoABB) + arvore->tamInfo);
 
-    // Primeiro passo verifica se a árvore está vazia 
-    if (testaVazia(arvore)){ // Se está vazia, sai e gera erro
-        printf("\nERRO: Tentativa de remocao de dado em arvore vazia.\n");
+    // Primeiro passo verifica se a árvore está vazia
+    if (testaVazia(arvore))
+    { // Se está vazia, sai e gera erro
+        printf("\n[removeABB] ERRO: Tentativa de remocao de dado em arvore vazia.\n");
         return Resultado;
     }
 
+    // Encontra o nó a ser removido da árvore
+    NoRemover = buscaNo(arvore, item, cmp);
     
-    // Percorre os elementos da árvore até encontrar o elemento que deseja-se remover
-    // Para percorrer os elementos de forma mais rapida, usa-se da organizacao dos nos da arvore para acelerar o processo
-    NoAtual = arvore->NoRaiz;               // Inicializa NoATUAL como NoRAIZ
-    NoPai = arvore->NoRaiz;                 // Inicializa NoPAI como NoRAIZ
-    COMPARA = cmp(&item,&NoAtual->dados);   // Compara o elemento buscado e o dado armazenado no NoAtual
-
-    if (COMPARA == 2){  // Caso esteja tentando remover o NoRAIZ
-
-        // ?????????
-
-    } else {
-
-        while (COMPARA != 2)  // Enquanto COMPARA não é 2 (==), continua a busca
-        {
-            NoPai = NoAtual;  // Atualiza o NoPAI
-
-            if (COMPARA == 0){
-                NoAtual = NoAtual->esquerda;  // Atualiza o NoATUAL
-            } else {
-                NoAtual = NoAtual->direita;   // Atualiza o NoATUAL
-            }
-
-            COMPARA_ant = COMPARA;
-            COMPARA = cmp(&item,&NoAtual->dados);   // Compara o elemento buscado e o dado armazenado no NoAtual
-
-            // Verifica se o NoATUAL está vazio e para o processo
-            if (NoAtual == NULL){
-                printf("\nERRO: Elemento procurado nao foi encontrado na arvore.\n");
-                return Resultado;
-            }
-        }
+    // Se o nó for nulo, é por quê ele não existe na árvore
+    if (NoRemover == NULL)
+    {
+        printf("\n[removeABB] ERRO: Elemento procurado nao foi encontrado na arvore.\n");
+        return Resultado;
     }
 
-    // Apos encontrar o NoATUAL, que contem a informacao a ser removida, realiza a remocao
-    // Caso seja no sem filhos:
-    if ((NoAtual->esquerda == NULL) & (NoAtual->direita == NULL)){
-        if (COMPARA_ant == 0){
-            NoPai->esquerda = NULL;
-        } else if (COMPARA_ant == 1) {
-            NoPai->direita = NULL;
-        }
-    } else 
-    // Caso seja no com um filho:
-    if ((NoAtual->esquerda == NULL) || (NoAtual->direita == NULL)){
-        if (NoAtual->esquerda == NULL){
-            if (COMPARA_ant == 0){
-                NoPai->esquerda = NoAtual->direita;  // Compara_ant define a perna do NoPAI, mas NoATUAL->esquerda == NULL define perna direita do NoATUAL
-            } else if (COMPARA_ant == 1){
-                NoPai->direita = NoAtual->direita;   // Compara_ant define a perna do NoPAI, mas NoATUAL->esquerda == NULL define perna direita do NoATUAL
-            }
-        } else {
-            if (COMPARA_ant == 0){
-                NoPai->esquerda = NoAtual->esquerda;  // Compara_ant define a perna do NoPAI, mas NoATUAL->esquerda == NULL define perna esquerda do NoATUAL
-            } else if (COMPARA_ant == 1){
-                NoPai->direita = NoAtual->esquerda;   // Compara_ant define a perna do NoPAI, mas NoATUAL->esquerda == NULL define perna esquerda do NoATUAL
-            }
-        }
-    } else {
-        
-        // Caso seja no com dois filhos:
-        pNoABB* NoPROX;
-        NoPROX = malloc(sizeof(pNoABB)+arvore->tamInfo);
+    // Caso 1: NoRemover não tem filhos
+    if (NoRemover->direita == NULL & NoRemover->esquerda == NULL)
+    {
+        printf("[removeABB] : removendo sem filhos.\n");
+        Resultado = remocaoNoSemFilhos (arvore, NoRemover);
+        return Resultado;
+    }
 
-        // 1. Verificamos se o filho da direita tem filho à esquerda
-        // e se esse também não tem filho à esquerda
-        NoPROX = NoAtual->direita->esquerda;
-        if ( (NoPROX != NULL) & 
-              (NoPROX->esquerda == NULL)) {
-
-        } else {
-
-        // 2. Verificamos se o filho da esquerda tem filho à direita
-        // e se esse também não tem filho filho à direita
-            NoPROX = NoAtual->esquerda->direita;
-            if ((NoPROX != NULL) & 
-                  (NoPROX->direita == NULL)) {
-
-                  }
-        }
+    // Caso 2a: NoRemover tem 1 filho na ESQUERDA
+    else if (NoRemover->direita == NULL)
+    {
+        printf("[removeABB] : Removendo no com 1 filho na esquerda.\n");
+        Resultado = remocaoNo1FilhoEsquerda (arvore, NoRemover);
+        return Resultado;
+    }
+    // Caso 2b: NoRemover tem 1 filho na DIREITA
+    else if (NoRemover->esquerda == NULL)
+    {
+        printf("[removeABB] : removendo no com 1 filho na direita.\n");
+        Resultado = remocaoNo1FilhoDireita (arvore, NoRemover);
+        return Resultado;
+    }
+    // Caso 3: NoRemover tem 2 filhos
+    else
+    {
+        printf("[removeABB] : Removendo no com 2 filhos.\n");
+        Resultado = remocaoNo2Filhos(arvore, NoRemover);
+        return Resultado;
     }
 }
 
+
 // Função PÚBLICA
 // Destroi a árvore
-int destroiABB(pABB * arvore)
+int destroiABB(pABB *arvore)
 {
     printf("Iniciando destruicao. Verfica se arvore esta alocada.\n");
-    if(!arvore) {
-
+    if (!arvore)
+    {
         printf("Arvore nao alocada!\n");
         return ERRO;
-
-    } else {
-        printf("Arvore alocada. Iniciando liberacao de nos.\n");
-        liberaNo(arvore->NoRaiz);
     }
-    printf("Todos os nos liberados. Liberando arvore.\n");
+    /*else if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
+    {
+        
+    }*/
+    else
+    {
+        if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
+        {
+            printf("Árvore sem nós filhos. ");
+        }
+        else
+        {
+            printf("Arvore alocada. Iniciando liberacao de nos.\n");
+            liberaNo(arvore->NoRaiz);
+            printf("Todos os nos liberados. ");
+        }
+    }
+    printf(" Liberando arvore.\n");
     free(arvore);
     return SUCESSO;
 }
 
 int liberaNo(pNoABB *noArvore)
 {
-    void * tmp;
+    void *tmp;
 
-    if(!noArvore) {
+    if (!noArvore)
+    {
 
         printf("No nao alocado!\n");
         return ERRO;
-
-    } else {
+    }
+    else
+    {
         tmp = noArvore->dados;
 
         printf("Analisando no %d\n", tmp);
         // printf("Analisando no... \n");
-        
 
         printf("Verificando no a esquerda de %d\n", tmp);
         // printf("Verificando no a esquerda\n");
-        if(noArvore->esquerda==NULL) printf("Sem no a esquerda\n"); 
-        else {
+        if (noArvore->esquerda == NULL)
+            printf("Sem no a esquerda\n");
+        else
+        {
             printf("No a esquerda encontrado!\n\n");
             liberaNo(noArvore->esquerda);
         }
 
         printf("Verificando no a direita de %d\n", tmp);
         // printf("Verificando no a direita\n");
-        if(noArvore->direita==NULL) printf("Sem no a direita\n");
-        else {
+        if (noArvore->direita == NULL)
+            printf("Sem no a direita\n");
+        else
+        {
             printf("No a direita encontrado!\n\n");
             liberaNo(noArvore->direita);
         }
-        
+
         free(noArvore);
         printf("No %d liberado com sucesso!\n\n", tmp);
         // printf("No liberado com sucesso!\n\n");
     }
-    
+
     return SUCESSO;
 }
 
-
-
-
 // Função PRIVADA
 // Adiciona um No filho à arvore
-pNoABB* adicionaNo(pNoABB * NoAtual, void * dado, int tamInfo, int * Resultado)
+pNoABB *adicionaNo(pNoABB *NoAtual, void *dado, int tamInfo, int *Resultado)
 {
-    NoAtual = (pNoABB*) malloc(sizeof(pNoABB)+tamInfo);
-    if (NoAtual == NULL) { 
+    NoAtual = (pNoABB *)malloc(sizeof(pNoABB) + tamInfo);
+    if (NoAtual == NULL)
+    {
         *Resultado = ERRO;
         exit(1);
-    } else{  // Em caso de erro
-
-        NoAtual->dados = (void*) malloc(tamInfo);
+    }
+    else
+    {
+        NoAtual->dados = (void *)malloc(tamInfo);
         NoAtual->dados = dado;
         NoAtual->esquerda = NULL;
         NoAtual->direita = NULL;
@@ -295,7 +457,38 @@ pNoABB* adicionaNo(pNoABB * NoAtual, void * dado, int tamInfo, int * Resultado)
 
 // Função PRIVADA
 // Verifica se a árvore está vazia
-int testaVazia(pABB * arvore)
+int testaVazia(pABB *arvore)
 {
-    return (arvore->NoRaiz==NULL);
+    return (arvore->NoRaiz == NULL);
+}
+
+int reiniciaABB(pABB *arvore)
+{
+    // Verifica se a ABB já não está vazia //WIP
+    if (testaVazia(arvore))
+    {
+        printf("A arvore já está vazia\n");
+        return SUCESSO;
+    }
+    if (!arvore)
+    {
+        printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+
+    liberaNo(arvore->NoRaiz);
+    printf("[reiniciaABB] : Todos os nós liberados. ");
+    arvore->quantidadeDados = 0;
+    return SUCESSO;
+}
+
+int quantificaABB(pABB *arvore)
+{
+    if (!arvore)
+    {
+        printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+    printf("[Existem %d elementos na árvore.]\n", arvore->quantidadeDados);
+    return SUCESSO;
 }

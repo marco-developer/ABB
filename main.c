@@ -37,26 +37,162 @@ int main(int argc, char **argv)
     pABB * abb;
 
     abb = criarABB(sizeof(int));
-    if(!abb) printf ("Erro ao criar arvore!"); else printf("Arvore criada com sucesso!");
+    if(!abb)
+        printf ("[main] : Erro ao criar arvore!");
+    else
+        printf("[main] : Arvore criada com sucesso!\n");
+
+    quantificaABB(abb);
 
 
-    // ADICIONA ELEMENTOS À ÀRVORE
-    printf("Inserindo elementos:\n");
-    for (int i=0; i<13; i++){
-
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======        Inserindo elementos         ======\n");
+    printf("[main] : ================================================\n");
+    
+    for (int i=0; i<13; i++)
+    {
         Res = insereABB(abb,p[i],cmpMaior);
-        if(Res==0) printf("Elemento %d inserido com sucesso!\n", p[i]); else printf ("Erro ao inserir elemento!");
+        if(Res==0)
+            printf("[main] : Elemento %d inserido com sucesso!\n", p[i]);
+        else
+            printf ("[main] : Erro ao inserir elemento!\n");
+        quantificaABB(abb);
+    }
 
+
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======    Removendo elementos em ordem    ======\n");
+    printf("[main] : ================================================\n");
+
+    for (int i=0; i<=12; i++)
+    {
+        printf("\nRemovendo elemento %d\n", p[i]);
+        Res = removeABB(abb,p[i],cmpMaior);
+        if(Res==0)
+            printf("Elemento removido com sucesso!\n");
+        else
+            printf ("Erro ao remover elemento!\n");
+        quantificaABB(abb);
     }
     
-    // REMOVE ELEMENTO
-    printf("\nRemovendo elementos:\n");
-    Res = removeABB(abb,p[4],cmpMaior);
-    if(Res==0) printf("Elemento %d removido com sucesso!\n", p[4]); else printf ("Erro ao remover elemento!");
+    
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======        Inserindo elementos         ======\n");
+    printf("[main] : ================================================\n");
+    
+    for (int i=0; i<13; i++)
+    {
+        Res = insereABB(abb,p[i],cmpMaior);
+        if(Res==0)
+            printf("[main] : Elemento %d inserido com sucesso!\n", p[i]);
+        else
+            printf ("[main] : Erro ao inserir elemento!\n");
+        quantificaABB(abb);
+    }
+    
+    
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======  Removendo elementos ao contrario  ======\n");
+    printf("[main] : ================================================\n");
+
+    for (int i=12; i>=0; i--)
+    {
+        printf("\nRemovendo elemento %d\n", p[i]);
+        Res = removeABB(abb,p[i],cmpMaior);
+        if(Res==0)
+            printf("Elemento removido com sucesso!\n");
+        else
+            printf ("Erro ao remover elemento!\n");
+        quantificaABB(abb);
+    }
+
+
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======        Inserindo elementos         ======\n");
+    printf("[main] : ================================================\n");
+    
+    for (int i=0; i<13; i++)
+    {
+        Res = insereABB(abb,p[i],cmpMaior);
+        if(Res==0)
+            printf("[main] : Elemento %d inserido com sucesso!\n", p[i]);
+        else
+            printf ("[main] : Erro ao inserir elemento!\n");
+        quantificaABB(abb);
+    }
+
+
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======    Removendo elementos parcial     ======\n");
+    printf("[main] : ================================================\n");
+
+    printf("\n[main] : Removendo elemento %d\n", p[1]);
+    Res = removeABB(abb,p[1],cmpMaior);
+    if(Res==0)
+        printf("[main] : Elemento removido com sucesso!\n");
+    else
+        printf ("[main] : Erro ao remover elemento!\n");
+    quantificaABB(abb);
+    
+    printf("\n[main] : Removendo elemento %d\n", p[7]);
+    Res = removeABB(abb,p[7],cmpMaior);
+    if(Res==0)
+        printf("[main] : Elemento removido com sucesso!\n");
+    else
+        printf ("[main] : Erro ao remover elemento!\n");
+    quantificaABB(abb);
+    
+    printf("\n[main] : Removendo elemento %d\n", p[12]);
+    Res = removeABB(abb,p[12],cmpMaior);
+    if(Res==0)
+        printf("[main] : Elemento removido com sucesso!\n");
+    else
+        printf ("[main] : Erro ao remover elemento!\n");
+    quantificaABB(abb);
+    
+    printf("\n[main] : Removendo elemento %d\n", p[2]);
+    Res = removeABB(abb,p[2],cmpMaior);
+    if(Res==0)
+        printf("[main] : Elemento removido com sucesso!\n");
+    else
+        printf ("[main] : Erro ao remover elemento!\n");
+    quantificaABB(abb);
+    
+    printf("\n[main] : Removendo elemento %d\n", p[9]);
+    Res = removeABB(abb,p[9],cmpMaior);
+    if(Res==0)
+        printf("[main] : Elemento removido com sucesso!\n");
+    else
+        printf ("[main] : Erro ao remover elemento!\n");
+    quantificaABB(abb);
+
+    
+    //quantificaABB(abb);
+
+    // REINICIA ARVORE
+    
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======          Reinicia arvore           ======\n");
+    printf("[main] : ================================================\n");
+    
+    Res = reiniciaABB(abb);
+    if(Res==0)
+        printf("Arvore reiniciada com sucesso!\n");
+    else
+        printf ("Erro ao reiniciar arvore!\n");
+    quantificaABB(abb);
 
     // DESTROI ARVORE
-    printf("\nPreparando para destruir arvore.\n");
-    Res = destroiABB(abb);
-    if(Res==0) printf("Arvore destruida com sucesso!\n"); else printf ("Erro ao destuir arvore!");
+    printf("\n[main] : ================================================\n");
+    printf("[main] : ======         Destruindo arvore          ======\n");
+    printf("[main] : ================================================\n");
     
+    Res = destroiABB(abb);
+    if(Res==0)
+        printf("Arvore destruida com sucesso!\n");
+    else
+        printf ("Erro ao destuir arvore!");
+    quantificaABB(abb);
+        
 }
+
