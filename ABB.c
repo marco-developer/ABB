@@ -359,10 +359,10 @@ int removeABB(pABB *arvore, void *item, int (*cmp)(void *, void *))
 // Destroi a árvore
 int destroiABB(pABB *arvore)
 {
-    printf("Iniciando destruicao. Verfica se arvore esta alocada.\n");
+    printf("[destroiABB] : Iniciando destruicao. Verfica se arvore esta alocada.\n");
     if (!arvore)
     {
-        printf("Arvore nao alocada!\n");
+        printf("[destroiABB] : Arvore nao alocada!\n");
         return ERRO;
     }
     /*else if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
@@ -373,16 +373,16 @@ int destroiABB(pABB *arvore)
     {
         if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
         {
-            printf("Árvore sem nós filhos. ");
+            printf("[destroiABB] : Árvore sem nós filhos. ");
         }
         else
         {
-            printf("Arvore alocada. Iniciando liberacao de nos.\n");
+            printf("[destroiABB] : Arvore alocada. Iniciando liberacao de nos.\n");
             liberaNo(arvore->NoRaiz);
-            printf("Todos os nos liberados. ");
+            printf("[destroiABB] : Todos os nos liberados.\n");
         }
     }
-    printf(" Liberando arvore.\n");
+    printf("[destroiABB] : Liberando arvore.\n");
     free(arvore);
     return SUCESSO;
 }
@@ -394,31 +394,31 @@ int liberaNo(pNoABB *noArvore)
     if (!noArvore)
     {
 
-        printf("No nao alocado!\n");
+        printf("[liberaNo] : No nao alocado!\n");
         return ERRO;
     }
     else
     {
         tmp = noArvore->dados;
 
-        printf("Analisando no %d\n", tmp);
+        printf("[liberaNo] : Analisando no %d\n", tmp);
 
-        printf("Verificando no a esquerda de %d\n", tmp);
+        printf("[liberaNo] : Verificando no a esquerda de %d\n", tmp);
         if (noArvore->esquerda == NULL)
-            printf("Sem no a esquerda\n");
+            printf("[liberaNo] : Sem no a esquerda\n");
         else
         {
-            printf("No a esquerda encontrado!\n\n");
+            printf("[liberaNo] : No a esquerda encontrado!\n\n");
             liberaNo(noArvore->esquerda);
             noArvore->esquerda = NULL;
         }
 
-        printf("Verificando no a direita de %d\n", tmp);
+        printf("[liberaNo] : Verificando no a direita de %d\n", tmp);
         if (noArvore->direita == NULL)
-            printf("Sem no a direita\n");
+            printf("[liberaNo] : Sem no a direita\n");
         else
         {
-            printf("No a direita encontrado!\n\n");
+            printf("[liberaNo] : No a direita encontrado!\n\n");
             liberaNo(noArvore->direita);
             noArvore->direita = NULL;
         }
@@ -431,7 +431,7 @@ int liberaNo(pNoABB *noArvore)
                 free(noArvore->dados);
                 noArvore = NULL; 
                 free(noArvore);
-                printf("No %d liberado com sucesso!\n\n", tmp);
+                printf("[liberaNo] : No %d liberado com sucesso!\n\n", tmp);
             }
         }
     }
