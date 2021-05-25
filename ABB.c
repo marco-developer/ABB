@@ -492,3 +492,25 @@ int quantificaABB(pABB *arvore)
     printf("[Existem %d elementos na árvore.]\n", arvore->quantidadeDados);
     return SUCESSO;
 }
+
+int imprimeArvore(pABB * arvore, void (* processa)(void *p)){
+    if(!arvore) {
+        printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+    percursoEmOrdem(arvore->NoRaiz->esquerda, processa);
+    processa(arvore->NoRaiz->dados);
+    percursoEmOrdem(arvore->NoRaiz->direita, processa);
+}
+
+int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p))
+{
+    if(!noArvore){
+        // printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+    percursoEmOrdem(noArvore->esquerda, processa);
+    processa(noArvore->dados);
+    percursoEmOrdem(noArvore->direita, processa);
+}
+
