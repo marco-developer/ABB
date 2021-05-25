@@ -18,6 +18,8 @@ int reiniciaABB(pABB * arvore);
 int quantificaABB(pABB * arvore);
 
 int imprimeArvore(pABB * arvore, void (* processa)(void *p));
-// int percursoEmOrdem(pABB * arvore, void (* processa)(void *p));
-int percursoEmOrdemEsq(pNoABB *noArvore, void (* processa)(void *p));
+int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p));
+int percursoPreOrdem(pNoABB *noArvore, void (* processa)(void *p));
+int percursoPosOrdem(pNoABB *noArvore, void (* processa)(void *p));
+
 void mostraArvore(pABB * arvore, int b);

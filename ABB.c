@@ -504,9 +504,22 @@ int imprimeArvore(pABB * arvore, void (* processa)(void *p)){
         printf("Arvore nao alocada!\n");
         return ERRO;
     }
+    printf("\n[imprimeArvore] : Iniciando impressao de percurso em ordem.\n");
     percursoEmOrdem(arvore->NoRaiz->esquerda, processa);
-    processa(arvore->NoRaiz->dados);
+    processa(&arvore->NoRaiz->dados);
     percursoEmOrdem(arvore->NoRaiz->direita, processa);
+    printf("\n[imprimeArvore] : ================================================\n");
+
+    printf("\n[imprimeArvore] : Iniciando impressao de percurso pre ordem.\n");
+    processa(&arvore->NoRaiz->dados);
+    percursoPreOrdem(arvore->NoRaiz->esquerda, processa);
+    percursoPreOrdem(arvore->NoRaiz->direita, processa);
+    printf("\n[imprimeArvore] : ================================================\n");
+
+    printf("\n[imprimeArvore] : Iniciando impressao de percurso pos ordem.\n");
+    percursoPosOrdem(arvore->NoRaiz->esquerda, processa);
+    percursoPosOrdem(arvore->NoRaiz->direita, processa);
+    processa(&arvore->NoRaiz->dados);
 }
 
 int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p))
@@ -515,8 +528,32 @@ int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p))
         // printf("Arvore nao alocada!\n");
         return ERRO;
     }
+    
     percursoEmOrdem(noArvore->esquerda, processa);
-    processa(noArvore->dados);
+    processa(&noArvore->dados);
     percursoEmOrdem(noArvore->direita, processa);
 }
 
+int percursoPreOrdem(pNoABB *noArvore, void (* processa)(void *p))
+{
+    if(!noArvore){
+        // printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+    
+    processa(&noArvore->dados);
+    percursoPreOrdem(noArvore->esquerda, processa);
+    percursoPreOrdem(noArvore->direita, processa);
+}
+
+int percursoPosOrdem(pNoABB *noArvore, void (* processa)(void *p))
+{
+    if(!noArvore){
+        // printf("Arvore nao alocada!\n");
+        return ERRO;
+    }
+    
+    percursoPosOrdem(noArvore->esquerda, processa);
+    percursoPosOrdem(noArvore->direita, processa);
+    processa(&noArvore->dados);
+}

@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     
     for (int i=0; i<13; i++)
     {
-        Res = insereABB(abb,&p[i],cmpMaior);
+        Res = insereABB(abb,p[i],cmpMaior);
         if(Res==0)
             printf("[main] : Elemento %d inserido com sucesso!\n", p[i]);
         else
