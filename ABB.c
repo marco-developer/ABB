@@ -121,7 +121,7 @@ int insereABB(pABB *arvore, void *dado, int (*cmp)(void *, void *))
     }
 
     // Esse ponto nunca deve ser atingido
-    // Resultado = ERRO;
+    Resultado = ERRO;
     return Resultado;
 }
 
@@ -364,11 +364,7 @@ int destroiABB(pABB *arvore)
     {
         printf("[destroiABB] : Arvore nao alocada!\n");
         return ERRO;
-    }
-    /*else if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
-    {
-        
-    }*/
+    } 
     else
     {
         if ((arvore->NoRaiz->esquerda == NULL) || (arvore->NoRaiz->direita == NULL))
@@ -504,6 +500,7 @@ int imprimeArvore(pABB * arvore, void (* processa)(void *p)){
         printf("Arvore nao alocada!\n");
         return ERRO;
     }
+
     printf("\n[imprimeArvore] : Iniciando impressao de percurso em ordem.\n");
     percursoEmOrdem(arvore->NoRaiz->esquerda, processa);
     processa(&arvore->NoRaiz->dados);
@@ -525,7 +522,6 @@ int imprimeArvore(pABB * arvore, void (* processa)(void *p)){
 int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p))
 {
     if(!noArvore){
-        // printf("Arvore nao alocada!\n");
         return ERRO;
     }
     
@@ -537,7 +533,6 @@ int percursoEmOrdem(pNoABB *noArvore, void (* processa)(void *p))
 int percursoPreOrdem(pNoABB *noArvore, void (* processa)(void *p))
 {
     if(!noArvore){
-        // printf("Arvore nao alocada!\n");
         return ERRO;
     }
     
@@ -549,7 +544,6 @@ int percursoPreOrdem(pNoABB *noArvore, void (* processa)(void *p))
 int percursoPosOrdem(pNoABB *noArvore, void (* processa)(void *p))
 {
     if(!noArvore){
-        // printf("Arvore nao alocada!\n");
         return ERRO;
     }
     
