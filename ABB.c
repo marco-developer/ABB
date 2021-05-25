@@ -201,7 +201,7 @@ int remocaoNo1FilhoDireita (pABB * arvore, pNoABB *NoRemover)
 
     if (NoRemover == arvore->NoRaiz)
     {
-        arvore->NoRaiz = arvore->NoRaiz->esquerda;
+        arvore->NoRaiz = arvore->NoRaiz->direita;
         arvore->quantidadeDados--;
         Resultado = SUCESSO;
         return Resultado;
@@ -245,7 +245,7 @@ int remocaoNo1FilhoEsquerda (pABB * arvore, pNoABB *NoRemover)
     }
     else
     {
-        NoPai->direita = NoRemover->direita;
+        NoPai->direita = NoRemover->esquerda;
     }
     arvore->quantidadeDados--;
     Resultado = SUCESSO;
@@ -293,7 +293,6 @@ int remocaoNo2Filhos(pABB *arvore, pNoABB *NoAtual)
     Resultado = SUCESSO;
     return Resultado;
 }
-
 
 
 // Função PÚBLICA
@@ -403,31 +402,38 @@ int liberaNo(pNoABB *noArvore)
         tmp = noArvore->dados;
 
         printf("Analisando no %d\n", tmp);
-        // printf("Analisando no... \n");
 
         printf("Verificando no a esquerda de %d\n", tmp);
-        // printf("Verificando no a esquerda\n");
         if (noArvore->esquerda == NULL)
             printf("Sem no a esquerda\n");
         else
         {
             printf("No a esquerda encontrado!\n\n");
             liberaNo(noArvore->esquerda);
+            noArvore->esquerda = NULL;
         }
 
         printf("Verificando no a direita de %d\n", tmp);
-        // printf("Verificando no a direita\n");
         if (noArvore->direita == NULL)
             printf("Sem no a direita\n");
         else
         {
             printf("No a direita encontrado!\n\n");
             liberaNo(noArvore->direita);
+            noArvore->direita = NULL;
         }
 
-        free(noArvore);
-        printf("No %d liberado com sucesso!\n\n", tmp);
-        // printf("No liberado com sucesso!\n\n");
+        if ((noArvore->direita == NULL)&(noArvore->esquerda == NULL)){
+            if (noArvore->dados != NULL){
+                noArvore->pai = NULL;
+                free(noArvore->pai);
+                noArvore->dados = NULL;
+                free(noArvore->dados);
+                noArvore = NULL; 
+                free(noArvore);
+                printf("No %d liberado com sucesso!\n\n", tmp);
+            }
+        }
     }
 
     return SUCESSO;
